@@ -46,7 +46,7 @@ class SpanDetail extends React.Component<Props, State> {
     const {span, isRoot} = this.props;
 
     if (span.parent_span_id && isRoot) {
-      this.fetchSpan(span.parent_span_id)
+      this.fetchSpan(span.parent_span_id, true)
         .then(response => {
           if (
             !response.data ||
@@ -79,15 +79,17 @@ class SpanDetail extends React.Component<Props, State> {
       });
   }
 
-  fetchSpan(spanID: string): Promise<any> {
+  fetchSpan(spanID: string, searchByParent: boolean = false): Promise<any> {
     const {api, orgId, span} = this.props;
 
     const url = `/organizations/${orgId}/eventsv2/`;
 
+    const spanKey = searchByParent ? 'transaction.parent_span_id' ? 'trace.span';
+
     const query = {
       field: ['transaction', 'id'],
       sort: ['-id'],
-      query: `event.type:transaction trace:${span.trace_id} trace.span:${spanID}`,
+      query: `event.type:transaction trace:${span.trace_id} ${spanKey}:${spanID}`,
     };
 
     return api.requestPromise(url, {
