@@ -26,23 +26,26 @@ type TransactionResult = {
 
 type Props = {
   api: Client;
-  span: Readonly<SpanType>;
   orgId: string;
+  span: Readonly<SpanType>;
+  isRoot: boolean;
 };
 
 type State = {
   parentEventSlug?: string;
+  eventSlug?: string;
 };
 
 class SpanDetail extends React.Component<Props, State> {
   state: State = {
     parentEventSlug: undefined,
+    eventSlug: undefined,
   };
 
   componentDidMount() {
-    const {span} = this.props;
+    const {span, isRoot} = this.props;
 
-    if (span.parent_span_id) {
+    if (span.parent_span_id && isRoot) {
       this.fetchSpan(span.parent_span_id)
         .then(response => {
           if (
