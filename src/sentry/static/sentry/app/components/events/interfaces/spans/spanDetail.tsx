@@ -7,67 +7,76 @@ import DateTime from 'app/components/dateTime';
 import Pills from 'app/components/pills';
 import Pill from 'app/components/pill';
 import space from 'app/styles/space';
+import withApi from 'app/utils/withApi';
+import {Client} from 'app/api';
 
 import {SpanType} from './types';
 
 type PropTypes = {
+  api: Client;
   span: Readonly<SpanType>;
 };
 
-const SpanDetail = (props: PropTypes) => {
-  const {span} = props;
+class SpanDetail extends React.Component<PropTypes> {
+  componentDidMount() {
+    console.log('foo');
+  }
 
-  const startTimestamp: number = span.start_timestamp;
-  const endTimestamp: number = span.timestamp;
+  render() {
+    const {span} = this.props;
 
-  const duration = (endTimestamp - startTimestamp) * 1000;
-  const durationString = `${duration.toFixed(3)} ms`;
+    const startTimestamp: number = span.start_timestamp;
+    const endTimestamp: number = span.timestamp;
 
-  return (
-    <SpanDetailContainer
-      data-component="span-detail"
-      onClick={event => {
-        // prevent toggling the span detail
-        event.stopPropagation();
-      }}
-    >
-      <table className="table key-value">
-        <tbody>
-          <Row title="Span ID">{span.span_id}</Row>
-          <Row title="Trace ID">{span.trace_id}</Row>
-          <Row title="Parent Span ID">{span.parent_span_id || ''}</Row>
-          <Row title="Description">{get(span, 'description', '')}</Row>
-          <Row title="Start Date">
-            <React.Fragment>
-              <DateTime date={startTimestamp * 1000} />
-              {` (${startTimestamp})`}
-            </React.Fragment>
-          </Row>
-          <Row title="End Date">
-            <React.Fragment>
-              <DateTime date={endTimestamp * 1000} />
-              {` (${endTimestamp})`}
-            </React.Fragment>
-          </Row>
-          <Row title="Duration">{durationString}</Row>
-          <Row title="Operation">{span.op || ''}</Row>
-          <Row title="Same Process as Parent">
-            {String(!!span.same_process_as_parent)}
-          </Row>
-          <Tags span={span} />
-          {map(get(span, 'data', {}), (value, key) => {
-            return (
-              <Row title={key} key={key}>
-                {JSON.stringify(value, null, 4) || ''}
-              </Row>
-            );
-          })}
-          <Row title="Raw">{JSON.stringify(span, null, 4)}</Row>
-        </tbody>
-      </table>
-    </SpanDetailContainer>
-  );
-};
+    const duration = (endTimestamp - startTimestamp) * 1000;
+    const durationString = `${duration.toFixed(3)} ms`;
+
+    return (
+      <SpanDetailContainer
+        data-component="span-detail"
+        onClick={event => {
+          // prevent toggling the span detail
+          event.stopPropagation();
+        }}
+      >
+        <table className="table key-value">
+          <tbody>
+            <Row title="Span ID">{span.span_id}</Row>
+            <Row title="Trace ID">{span.trace_id}</Row>
+            <Row title="Parent Span ID">{span.parent_span_id || ''}</Row>
+            <Row title="Description">{get(span, 'description', '')}</Row>
+            <Row title="Start Date">
+              <React.Fragment>
+                <DateTime date={startTimestamp * 1000} />
+                {` (${startTimestamp})`}
+              </React.Fragment>
+            </Row>
+            <Row title="End Date">
+              <React.Fragment>
+                <DateTime date={endTimestamp * 1000} />
+                {` (${endTimestamp})`}
+              </React.Fragment>
+            </Row>
+            <Row title="Duration">{durationString}</Row>
+            <Row title="Operation">{span.op || ''}</Row>
+            <Row title="Same Process as Parent">
+              {String(!!span.same_process_as_parent)}
+            </Row>
+            <Tags span={span} />
+            {map(get(span, 'data', {}), (value, key) => {
+              return (
+                <Row title={key} key={key}>
+                  {JSON.stringify(value, null, 4) || ''}
+                </Row>
+              );
+            })}
+            <Row title="Raw">{JSON.stringify(span, null, 4)}</Row>
+          </tbody>
+        </table>
+      </SpanDetailContainer>
+    );
+  }
+}
 
 const SpanDetailContainer = styled('div')`
   border-bottom: 1px solid ${p => p.theme.gray1};
@@ -127,4 +136,4 @@ const Tags = ({span}: {span: SpanType}) => {
   );
 };
 
-export default SpanDetail;
+export default withApi(SpanDetail);
