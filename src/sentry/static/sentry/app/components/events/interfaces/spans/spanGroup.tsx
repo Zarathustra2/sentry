@@ -5,6 +5,7 @@ import {SpanType, ParsedTraceType} from './types';
 import SpanBar from './spanBar';
 
 type PropType = {
+  orgId: string;
   span: Readonly<SpanType>;
   trace: Readonly<ParsedTraceType>;
   generateBounds: (bounds: SpanBoundsType) => SpanGeneratedBoundsType;
@@ -57,11 +58,13 @@ class SpanGroup extends React.Component<PropType, State> {
       treeDepth,
       spanNumber,
       isCurrentSpanFilteredOut,
+      orgId,
     } = this.props;
 
     return (
       <React.Fragment>
         <SpanBar
+          orgId={orgId}
           spanBarColour={spanBarColour}
           span={span}
           showSpanTree={this.state.showSpanTree}

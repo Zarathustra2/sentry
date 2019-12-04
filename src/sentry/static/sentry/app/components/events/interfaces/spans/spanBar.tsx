@@ -164,6 +164,7 @@ const getDurationDisplay = ({
 };
 
 type SpanBarProps = {
+  orgId: string;
   trace: Readonly<ParsedTraceType>;
   span: Readonly<SpanType>;
   spanBarColour: string;
@@ -218,9 +219,9 @@ class SpanBar extends React.Component<SpanBarProps, SpanBarState> {
       return null;
     }
 
-    const {span} = this.props;
+    const {span, orgId} = this.props;
 
-    return <SpanDetail span={span} />;
+    return <SpanDetail span={span} orgId={orgId} />;
   };
 
   getBounds = (): {

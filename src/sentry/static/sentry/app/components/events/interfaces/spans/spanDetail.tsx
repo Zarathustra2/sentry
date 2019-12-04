@@ -9,17 +9,107 @@ import Pill from 'app/components/pill';
 import space from 'app/styles/space';
 import withApi from 'app/utils/withApi';
 import {Client} from 'app/api';
+import {
+  generateEventSlug,
+  generateEventDetailsRoute,
+} from 'app/views/eventsV2/eventDetails/utils';
+import Button from 'app/components/button';
 
 import {SpanType} from './types';
+import {t} from 'app/locale';
 
-type PropTypes = {
-  api: Client;
-  span: Readonly<SpanType>;
+type TransactionResult = {
+  'project.name': String;
+  transaction: String;
+  id: String;
 };
 
-class SpanDetail extends React.Component<PropTypes> {
+type Props = {
+  api: Client;
+  span: Readonly<SpanType>;
+  orgId: string;
+};
+
+type State = {
+  parentEventSlug?: string;
+};
+
+class SpanDetail extends React.Component<Props, State> {
+  state: State = {
+    parentEventSlug: undefined,
+  };
+
   componentDidMount() {
-    console.log('foo');
+    const {span} = this.props;
+
+    if (span.parent_span_id) {
+      this.fetchSpan(span.parent_span_id)
+        .then(response => {
+          if (
+            !response.data ||
+            !Array.isArray(response.data) ||
+            response.data.length <= 0
+          ) {
+            return;
+          }
+
+          const result: TransactionResult = response.data[0];
+
+          this.setState({
+            parentEventSlug: generateEventSlug({
+              id: result.id,
+              'project.name': result['project.name'],
+            }),
+          });
+        })
+        .catch(_error => {
+          // don't do anything
+        });
+    }
+
+    this.fetchSpan(span.span_id)
+      .then(response => {
+        console.log('response', span.span_id, response);
+      })
+      .catch(_error => {
+        // don't do anything
+      });
+  }
+
+  fetchSpan(spanID: string): Promise<any> {
+    const {api, orgId, span} = this.props;
+
+    const url = `/organizations/${orgId}/eventsv2/`;
+
+    const query = {
+      field: ['transaction', 'id'],
+      sort: ['-id'],
+      query: `event.type:transaction trace:${span.trace_id} trace.span:${spanID}`,
+    };
+
+    return api.requestPromise(url, {
+      method: 'GET',
+      query,
+    });
+  }
+
+  renderParentButton(): React.ReactNode {
+    if (!this.state.parentEventSlug) {
+      return null;
+    }
+
+    const parentTransaction = generateEventDetailsRoute({
+      eventSlug: this.state.parentEventSlug,
+      orgSlug: this.props.orgId,
+    });
+
+    return (
+      <div>
+        <Button size="xsmall" href={parentTransaction}>
+          {t('Go to parent transaction')}
+        </Button>
+      </div>
+    );
   }
 
   render() {
@@ -39,6 +129,7 @@ class SpanDetail extends React.Component<PropTypes> {
           event.stopPropagation();
         }}
       >
+        {this.renderParentButton()}
         <table className="table key-value">
           <tbody>
             <Row title="Span ID">{span.span_id}</Row>

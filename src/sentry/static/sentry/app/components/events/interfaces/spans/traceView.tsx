@@ -43,6 +43,7 @@ export type FilterSpans = {
 };
 
 type Props = {
+  orgId: string;
   event: Readonly<SentryTransactionEvent>;
   searchQuery: string | undefined;
 };
@@ -204,6 +205,7 @@ class TraceView extends React.PureComponent<Props, State> {
     }
 
     const parsedTrace = this.state.parsedTrace;
+    const {orgId} = this.props;
 
     return (
       <DragManager interactiveLayerRef={this.minimapInteractiveRef}>
@@ -219,6 +221,7 @@ class TraceView extends React.PureComponent<Props, State> {
                 trace={parsedTrace}
                 dragProps={dragProps}
                 filterSpans={this.state.filterSpans}
+                orgId={orgId}
               />
             </CursorGuideHandler.Provider>
           );

@@ -26,6 +26,7 @@ type RenderedSpanTree = {
 };
 
 type PropType = {
+  orgId: string;
   trace: ParsedTraceType;
   dragProps: DragManagerChildrenProps;
   filterSpans: FilterSpans | undefined;
@@ -120,6 +121,8 @@ class SpanTree extends React.Component<PropType> {
     childSpans: Readonly<SpanChildrenLookupType>;
     generateBounds: (bounds: SpanBoundsType) => SpanGeneratedBoundsType;
   }): RenderedSpanTree => {
+    const {orgId} = this.props;
+
     const spanBarColour: string = pickSpanBarColour(span.op);
     const spanChildren: Array<SpanType> = get(childSpans, span.span_id, []);
 
@@ -194,6 +197,7 @@ class SpanTree extends React.Component<PropType> {
         <React.Fragment>
           {infoMessage}
           <SpanGroup
+            orgId={orgId}
             spanNumber={spanNumber}
             isLast={isLast}
             continuingTreeDepths={continuingTreeDepths}

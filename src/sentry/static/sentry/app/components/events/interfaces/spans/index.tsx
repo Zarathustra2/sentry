@@ -1,14 +1,16 @@
 import React from 'react';
-import SentryTypes from 'app/sentryTypes';
-import SearchBar from 'app/components/searchBar';
+import PropTypes from 'prop-types';
 
 import {t} from 'app/locale';
+import SearchBar from 'app/components/searchBar';
+import SentryTypes from 'app/sentryTypes';
 import {Panel} from 'app/components/panels';
 
 import {SentryTransactionEvent} from './types';
 import TraceView from './traceView';
 
 type PropType = {
+  orgId: string;
   event: SentryTransactionEvent;
 };
 
@@ -19,6 +21,7 @@ type State = {
 class SpansInterface extends React.Component<PropType, State> {
   static propTypes = {
     event: SentryTypes.Event.isRequired,
+    orgId: PropTypes.string.isRequired,
   };
 
   state: State = {
@@ -32,7 +35,9 @@ class SpansInterface extends React.Component<PropType, State> {
   };
 
   render() {
-    const {event} = this.props;
+    const {event, orgId} = this.props;
+
+    console.log('event', event);
 
     return (
       <div>
@@ -44,7 +49,7 @@ class SpansInterface extends React.Component<PropType, State> {
         />
         <br />
         <Panel>
-          <TraceView event={event} searchQuery={this.state.searchQuery} />
+          <TraceView event={event} searchQuery={this.state.searchQuery} orgId={orgId} />
         </Panel>
       </div>
     );
