@@ -84,7 +84,7 @@ class SpanDetail extends React.Component<Props, State> {
 
     const url = `/organizations/${orgId}/eventsv2/`;
 
-    const spanKey = searchByParent ? 'transaction.parent_span_id' ? 'trace.span';
+    const spanKey = searchByParent ? 'transaction.parent_span_id' : 'trace.span';
 
     const query = {
       field: ['transaction', 'id'],
