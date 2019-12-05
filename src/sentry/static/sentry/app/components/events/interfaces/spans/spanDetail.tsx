@@ -131,10 +131,11 @@ class SpanDetail extends React.Component<Props, State> {
           event.stopPropagation();
         }}
       >
-        {this.renderTraversalButton()}
         <table className="table key-value">
           <tbody>
-            <Row title="Span ID">{span.span_id}</Row>
+            <Row title="Span ID" extra={this.renderTraversalButton()}>
+              {span.span_id}
+            </Row>
             <Row title="Trace ID">{span.trace_id}</Row>
             <Row title="Parent Span ID">{span.parent_span_id || ''}</Row>
             <Row title="Description">{get(span, 'description', '')}</Row>
@@ -177,14 +178,26 @@ const SpanDetailContainer = styled('div')`
   cursor: auto;
 `;
 
+const ValueTd = styled('td')`
+  display: flex !important;
+  max-width: 100% !important;
+  align-items: center;
+`;
+
+const PreValue = styled('pre')`
+  flex: 1;
+`;
+
 const Row = ({
   title,
   keep,
   children,
+  extra = null,
 }: {
   title: string;
   keep?: boolean;
   children: JSX.Element | string;
+  extra?: React.ReactNode;
 }) => {
   if (!keep && !children) {
     return null;
@@ -193,11 +206,12 @@ const Row = ({
   return (
     <tr>
       <td className="key">{title}</td>
-      <td className="value">
-        <pre className="val">
+      <ValueTd className="value">
+        <PreValue className="val">
           <span className="val-string">{children}</span>
-        </pre>
-      </td>
+        </PreValue>
+        {extra}
+      </ValueTd>
     </tr>
   );
 };
