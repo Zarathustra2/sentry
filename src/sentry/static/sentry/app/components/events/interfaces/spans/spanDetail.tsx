@@ -78,12 +78,15 @@ class SpanDetail extends React.Component<Props, State> {
 
     const url = `/organizations/${orgId}/eventsv2/`;
 
+    // TODO: ideally trace.parent_span_id
+    const parent_span_id_key = 'contexts.value';
+
     const query = {
       field: ['transaction', 'id'],
       sort: ['-id'],
       query: `event.type:transaction trace:${
         span.trace_id
-      } trace.parent_span_id:${spanID}`,
+      } ${parent_span_id_key}:${spanID}`,
     };
 
     return api.requestPromise(url, {
