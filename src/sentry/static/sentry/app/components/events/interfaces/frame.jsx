@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import styled, {css} from 'react-emotion';
+import styled from 'react-emotion';
+import {css} from 'react-emotion';
 
 import {defined, objectIsEmpty, isUrl} from 'app/utils';
 import {t} from 'app/locale';

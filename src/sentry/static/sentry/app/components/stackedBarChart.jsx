@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
 import isEqual from 'lodash/isEqual';
-import styled, {cx} from 'react-emotion';
+import styled from 'react-emotion';
+import {cx} from 'emotion';
 
 import Tooltip from 'app/components/tooltip';
 import Count from 'app/components/count';

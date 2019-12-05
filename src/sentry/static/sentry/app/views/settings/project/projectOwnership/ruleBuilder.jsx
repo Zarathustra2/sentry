@@ -137,7 +137,7 @@ class RuleBuilder extends React.Component {
             }
           />
           <Divider src="icon-chevron-right" />
-          <Flex flex="1" align="center" mr={1}>
+          <Flex flex="1" alignItems="center" mr={1}>
             <SelectOwners
               organization={organization}
               project={project}

@@ -20,13 +20,13 @@ const inputStyles = (props: Props) =>
     transition: border 0.1s linear;
     resize: vertical;
 
-    ${props.monospace ? `font-family: ${props.theme.text.familyMono}` : ''};
+    ${props.monospace ? `font-family: ${props.theme.text.familyMono};` : ''}
 
     ${props.readOnly
       ? css`
           cursor: default;
         `
-      : ''};
+      : ''}
 
     &:focus {
       outline: none;

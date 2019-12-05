@@ -221,7 +221,7 @@ const ProjectPlatformIcon = styled(PlatformIconTile)`
 `;
 
 const ProjectNameInput = styled('div')`
-  ${inputStyles};
+  ${inputStyles}
   display: grid;
   grid-template-columns: min-content 1fr;
   grid-gap: ${space(1)};

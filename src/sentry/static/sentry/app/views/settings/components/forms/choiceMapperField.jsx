@@ -166,7 +166,7 @@ export default class ChoiceMapper extends React.Component {
 
     return (
       <React.Fragment>
-        <Flex align="center">
+        <Flex alignItems="center">
           <LabelColumn>
             <StyledHeader>{mappedColumnLabel}</StyledHeader>
           </LabelColumn>
@@ -175,8 +175,8 @@ export default class ChoiceMapper extends React.Component {
               key={fieldKey}
               ml={1}
               flex="1 0 0"
-              align="center"
-              justify="space-between"
+              alignItems="center"
+              justifyContent="space-between"
             >
               <StyledHeader>{columnLabels[fieldKey]}</StyledHeader>
               {i === mappedKeys.length - 1 && dropdown}
@@ -184,10 +184,10 @@ export default class ChoiceMapper extends React.Component {
           ))}
         </Flex>
         {Object.keys(value).map(itemKey => (
-          <Flex key={itemKey} align="center" mt={1}>
+          <Flex key={itemKey} alignItems="center" mt={1}>
             <LabelColumn>{valueMap[itemKey]}</LabelColumn>
             {mappedKeys.map((fieldKey, i) => (
-              <Flex key={fieldKey} align="center" ml={1} flex="1 0 0">
+              <Flex key={fieldKey} alignItems="center" ml={1} flex="1 0 0">
                 <Box flex={1}>
                   <SelectControl
                     {...(perItemMapping

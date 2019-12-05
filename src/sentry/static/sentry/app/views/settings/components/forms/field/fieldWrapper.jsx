@@ -1,5 +1,6 @@
 import React from 'react';
-import styled, {css} from 'react-emotion';
+import styled from 'react-emotion';
+import {css} from 'react-emotion';
 import {Flex} from 'grid-emotion';
 import space from 'app/styles/space';
 

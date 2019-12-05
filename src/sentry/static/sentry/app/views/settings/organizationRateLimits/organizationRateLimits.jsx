@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core';
 import {Box} from 'grid-emotion';
 import PropTypes from 'prop-types';
 import React from 'react';

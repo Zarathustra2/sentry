@@ -165,7 +165,7 @@ class OwnerInput extends React.Component {
             autoCorrect="off"
             autoCapitalize="off"
           />
-          <Flex align="center" justify="space-between">
+          <Flex alignItems="center" justifyContent="space-between">
             <div>{this.parseError(error)}</div>
             <SaveButton>
               <Button

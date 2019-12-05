@@ -1,4 +1,5 @@
-import styled, {css} from 'react-emotion';
+import styled from 'react-emotion';
+import {css} from 'react-emotion';
 
 /**
  * If `blendCorner` is false, then we apply border-radius to all corners

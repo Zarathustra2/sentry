@@ -47,7 +47,7 @@ class ApplicationScopes extends React.Component {
           return (
             <ScopesGridItemWrapper key={scope}>
               <ScopesGridItem>
-                <Flex align="center" flex="1">
+                <Flex alignItems="center" flex="1">
                   <ScopesTitle>{scope}</ScopesTitle>
                 </Flex>
 

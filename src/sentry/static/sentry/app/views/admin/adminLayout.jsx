@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core';
 import DocumentTitle from 'react-document-title';
 import React from 'react';
 

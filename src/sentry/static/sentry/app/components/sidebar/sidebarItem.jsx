@@ -1,7 +1,8 @@
 import {withRouter} from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled, {css} from 'react-emotion';
+import styled from 'react-emotion';
+import {css} from '@emotion/core';
 
 import HookOrDefault from 'app/components/hookOrDefault';
 import Tooltip from 'app/components/tooltip';
@@ -131,7 +132,7 @@ const getActiveStyle = ({active, theme}) => {
   `;
 };
 
-const StyledSidebarItem = styled(({active: _, ...props}) => <Link {...props} />)`
+const StyledSidebarItem = styled(Link)`
   display: flex;
   color: inherit;
   position: relative;

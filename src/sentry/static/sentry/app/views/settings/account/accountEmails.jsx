@@ -47,8 +47,8 @@ class EmailRow extends React.Component {
     const {email, isPrimary, isVerified, hideRemove} = this.props;
 
     return (
-      <PanelItem justify="space-between">
-        <Flex align="center">
+      <PanelItem justifyContent="space-between">
+        <Flex alignItems="center">
           {email}
           {!isVerified && (
             <TagWithSpace priority="warning">{t('Unverified')}</TagWithSpace>

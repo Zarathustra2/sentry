@@ -34,7 +34,7 @@ class SettingsSearch extends React.Component {
           <SearchInputWrapper>
             <SearchInputIcon size="14px" />
             <SearchInput
-              innerRef={ref => (this.searchInput = ref)}
+              ref={ref => (this.searchInput = ref)}
               {...getInputProps({
                 type: 'text',
                 placeholder: t('Search'),

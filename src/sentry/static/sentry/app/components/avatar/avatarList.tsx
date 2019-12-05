@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled, {css} from 'react-emotion';
+import styled from 'react-emotion';
+import {css} from 'react-emotion';
 
 import {User} from 'app/types';
 import SentryTypes from 'app/sentryTypes';

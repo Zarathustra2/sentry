@@ -1,8 +1,11 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core';
 import {Flex} from 'grid-emotion';
 import {Link} from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled, {css} from 'react-emotion';
+import styled from 'react-emotion';
+import {css} from 'react-emotion';
 
 import {t} from 'app/locale';
 import ExternalLink from 'app/components/links/externalLink';
@@ -47,10 +50,10 @@ class ProjectPluginRow extends React.PureComponent {
           const LinkOrSpan = hasAccess ? Link : 'span';
 
           return (
-            <Flex key={id} className={slug} flex="1" align="center">
+            <Flex key={id} className={slug} flex="1" alignItems="center">
               <PluginInfo>
                 <StyledPluginIcon size={48} pluginId={id} />
-                <Flex justify="center" direction="column">
+                <Flex justifyContent="center" flexDirection="column">
                   <PluginName>
                     {`${name} `}
                     {getDynamicText({

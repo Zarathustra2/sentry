@@ -1,7 +1,8 @@
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled, {css, keyframes} from 'react-emotion';
+import styled from 'react-emotion';
+import {css, keyframes} from 'emotion';
 import * as Sentry from '@sentry/browser';
 
 import {t, tct} from 'app/locale';

@@ -1,9 +1,12 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core';
 import throttle from 'lodash/throttle';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import zxcvbn from 'zxcvbn';
-import styled, {css} from 'react-emotion';
+import styled from 'react-emotion';
+import {css} from 'react-emotion';
 import {tct} from 'app/locale';
 
 import theme from 'app/utils/theme';

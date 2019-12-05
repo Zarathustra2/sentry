@@ -20,7 +20,7 @@ type Props = {
   loading: boolean;
   innerRef: React.Ref<HTMLDivElement>;
   onClear: () => void;
-} & HTMLDivElement;
+} & React.HTMLProps<HTMLDivElement>;
 
 class HeaderItem extends React.Component<Props> {
   static propTypes = {
@@ -62,23 +62,14 @@ class HeaderItem extends React.Component<Props> {
     return (
       <StyledHeaderItem
         className={className}
-        isOpen={isOpen}
-        hasSelected={hasSelected}
         locked={locked}
         loading={loading}
         {...props}
       >
-        <IconContainer hasSelected={hasSelected} locked={locked}>
-          {icon}
-        </IconContainer>
+        <IconContainer>{icon}</IconContainer>
         <Content>{children}</Content>
         {hasSelected && !locked && allowClear && (
-          <StyledClose
-            src="icon-close"
-            locked={locked}
-            hasSelected={hasSelected}
-            onClick={this.handleClear}
-          />
+          <StyledClose src="icon-close" onClick={this.handleClear} />
         )}
         {settingsLink && (
           <SettingsIconLink to={settingsLink}>
@@ -107,7 +98,7 @@ const getColor = p => {
   return p.isOpen || p.hasSelected ? p.theme.gray4 : p.theme.gray2;
 };
 
-const StyledHeaderItem = styled('div')`
+const StyledHeaderItem = styled('div')<{locked: boolean; loading: boolean}>`
   display: flex;
   padding: 0 ${space(4)};
   align-items: center;
@@ -175,6 +166,4 @@ const StyledLock = styled(InlineSvg)`
   stroke-width: 1.5;
 `;
 
-export default React.forwardRef((props: Props, ref: React.Ref<HTMLDivElement>) => (
-  <HeaderItem {...props} innerRef={ref} />
-));
+export default HeaderItem;

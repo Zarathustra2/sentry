@@ -1,4 +1,4 @@
-import {css} from 'emotion';
+import {css} from 'react-emotion';
 import PropTypes from 'prop-types';
 import React from 'react';
 import posed, {PoseGroup} from 'react-pose';

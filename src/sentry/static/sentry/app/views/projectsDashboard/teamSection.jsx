@@ -28,7 +28,7 @@ class TeamSection extends React.Component {
 
     return (
       <TeamSectionWrapper data-test-id="team" showBorder={showBorder}>
-        <TeamTitleBar justify="space-between" align="center">
+        <TeamTitleBar justifyContent="space-between" alignItems="center">
           <TeamName>{title}</TeamName>
           {hasTeamAccess && team && <TeamMembers teamId={team.slug} orgId={orgId} />}
         </TeamTitleBar>

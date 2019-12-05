@@ -27,7 +27,7 @@ class SettingsLayout extends React.Component {
       <React.Fragment>
         <SettingsColumn>
           <SettingsHeader>
-            <Flex align="center" width={1}>
+            <Flex alignItems="center">
               <Box flex="1">
                 <SettingsBreadcrumb
                   params={params}

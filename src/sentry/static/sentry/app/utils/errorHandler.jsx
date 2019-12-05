@@ -20,6 +20,8 @@ export default function errorHandler(Component) {
 
     componentDidCatch(error, info) {
       // eslint-disable-next-line no-console
+      console.error(error);
+      // eslint-disable-next-line no-console
       console.error(
         'Component stack trace caught in <ErrorHandler />:',
         info.componentStack

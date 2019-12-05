@@ -145,9 +145,9 @@ class ReleaseArtifacts extends React.Component {
                   <Flex flex="2">
                     {file.dist || <span className="text-light">{t('None')}</span>}
                   </Flex>
-                  <Flex flex="3" justify="space-between">
+                  <Flex flex="3" justifyContent="space-between">
                     <FileSize bytes={file.size} />
-                    <Flex align="center">
+                    <Flex alignItems="center">
                       {access.has('project:write') ? (
                         <a
                           href={

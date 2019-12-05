@@ -137,7 +137,7 @@ class GroupTags extends React.Component {
 
     return (
       <div>
-        <Flex wrap="wrap">{children}</Flex>
+        <Flex flexWrap="wrap">{children}</Flex>
         <Alert type="info">
           {tct(
             'Tags are automatically indexed for searching and breakdown charts. Learn how to [link: add custom tags to issues]',

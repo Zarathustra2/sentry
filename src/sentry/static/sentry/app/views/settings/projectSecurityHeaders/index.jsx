@@ -98,8 +98,8 @@ export default class ProjectSecurityHeaders extends AsyncView {
           <PanelHeader>{t('Supported Formats')}</PanelHeader>
           <PanelBody>
             {this.getReports().map(({name, description, url}) => (
-              <PanelItem key={url} p={0} direction="column">
-                <Flex flex="1" p={2} align="center">
+              <PanelItem key={url} p={0} flexDirection="column">
+                <Flex flex="1" p={2} alignItems="center">
                   <Box flex="1">
                     <HeaderName>{name}</HeaderName>
                   </Box>

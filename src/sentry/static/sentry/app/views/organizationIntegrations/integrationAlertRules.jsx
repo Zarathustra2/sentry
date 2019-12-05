@@ -35,7 +35,7 @@ class IntegrationAlertRules extends React.Component {
             </EmptyMessage>
           )}
           {projects.map(project => (
-            <PanelItem key={project.slug} align="center">
+            <PanelItem key={project.slug} alignItems="center">
               <Box flex="1">
                 <ProjectBadge project={project} avatarSize={16} />
               </Box>

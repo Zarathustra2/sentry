@@ -66,7 +66,7 @@ class OrganizationCrumb extends React.Component {
               params: {...params, orgId: organization.slug},
             })}
           >
-            <Flex align="center">
+            <Flex alignItems="center">
               <IdBadge avatarSize={18} organization={organization} />
             </Flex>
           </CrumbLink>

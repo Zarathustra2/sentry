@@ -211,7 +211,7 @@ const StatusIndicator = styled(({status, ...props}: StatusIndicatorProps) => {
   //need to omit isInternal
   const propsToPass = omit(props, ['isInternal']);
   return (
-    <Flex align="center">
+    <Flex alignItems="center">
       <CircleIndicator size={6} color={theme[color[status]]} />
       <div {...propsToPass}>{t(`${status}`)}</div>
     </Flex>
@@ -233,7 +233,7 @@ type PublishStatusProps = {status: SentryApp['status']; theme?: any};
 
 const PublishStatus = styled(({status, ...props}: PublishStatusProps) => {
   return (
-    <Flex align="center">
+    <Flex alignItems="center">
       <div {...props}>{t(`${status}`)}</div>
     </Flex>
   );

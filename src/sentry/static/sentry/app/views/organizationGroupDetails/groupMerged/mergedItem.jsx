@@ -151,7 +151,7 @@ const ActionColumn = styled(Flex)`
 `;
 
 const Controls = styled(({expanded: _expanded, ...props}) => (
-  <Flex justify="space-between" {...props} />
+  <Flex justifyContent="space-between" {...props} />
 ))`
   border-top: 1px solid ${p => p.theme.borderLight};
   background-color: #f3f1f6;

@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core';
 import $ from 'jquery';
 import Modal, {Header, Body, Footer} from 'react-bootstrap/lib/Modal';
 import PropTypes from 'prop-types';

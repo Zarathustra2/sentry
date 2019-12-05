@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core';
 import debounce from 'lodash/debounce';
 import {withRouter} from 'react-router';
 import PropTypes from 'prop-types';

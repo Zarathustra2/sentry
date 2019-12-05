@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {cx} from 'react-emotion';
+import {cx} from 'emotion';
 
 class SearchBar extends React.PureComponent {
   static propTypes = {
