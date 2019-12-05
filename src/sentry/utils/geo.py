@@ -54,14 +54,34 @@ def _init_geoip():
 
 
 def _init_geoip_rust():
+    import sys
+    print("_init_geoip_rust")
+    sys.stdout.flush()
+    sys.stderr.flush()
+
     global rust_geoip
 
     from semaphore.processing import GeoIpLookup
 
     try:
+        print("opening rust db")
+        sys.stdout.flush()
+        sys.stderr.flush()
         rust_geoip = GeoIpLookup.from_path(geoip_path_mmdb)
-    except Exception:
+    except Exception as e:
+        print("Error opening GeoIP database in Rust: %s" % geoip_path_mmdb)
+        print(e)
+        sys.stdout.flush()
+        sys.stderr.flush()
         logger.warning("Error opening GeoIP database in Rust: %s" % geoip_path_mmdb)
+    except BaseException as e:
+        print("big oops", type(e))
+        print(e)
+        sys.stdout.flush()
+        sys.stderr.flush()
+    print("finished _init_geoip_rust")
+    sys.stdout.flush()
+    sys.stderr.flush()
 
 
 if geoip_path_mmdb:

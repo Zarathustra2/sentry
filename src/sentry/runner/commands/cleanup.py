@@ -39,7 +39,13 @@ API_TOKEN_TTL_IN_DAYS = 30
 
 
 def multiprocess_worker(task_queue):
+    import sys
+
     # Configure within each Process
+    print ("starting multiprocess_worker", task_queue)
+    sys.stdout.flush()
+    sys.stderr.flush()
+
     import logging
     from sentry.utils.imports import import_string
 
@@ -49,37 +55,65 @@ def multiprocess_worker(task_queue):
 
     while True:
         j = task_queue.get()
+        print ("worker got task")
+        sys.stdout.flush()
+        sys.stderr.flush()
         if j == _STOP_WORKER:
+            print ("stopping worker")
+            sys.stdout.flush()
+            sys.stderr.flush()
             task_queue.task_done()
             return
 
         # On first task, configure Sentry environment
         if not configured:
-            from sentry.runner import configure
+            print("configuring worker")
+            sys.stdout.flush()
+            sys.stderr.flush()
 
-            configure()
+            try:
+                from sentry.runner import configure
 
-            from sentry import models
-            from sentry import deletions
-            from sentry import similarity
+                print("configuring")
+                sys.stdout.flush()
+                sys.stderr.flush()
+                configure()
+                print("after configure")
+                sys.stdout.flush()
+                sys.stderr.flush()
 
-            skip_models = [
-                # Handled by other parts of cleanup
-                models.Event,
-                models.EventAttachment,
-                models.UserReport,
-                models.Group,
-                models.GroupEmailThread,
-                models.GroupRuleStatus,
-                # Handled by TTL
-                similarity.features,
-            ] + [b[0] for b in EXTRA_BULK_QUERY_DELETES]
+                from sentry import models
+                from sentry import deletions
+                from sentry import similarity
 
-            configured = True
+                skip_models = [
+                    # Handled by other parts of cleanup
+                    models.Event,
+                    models.EventAttachment,
+                    models.UserReport,
+                    models.Group,
+                    models.GroupEmailThread,
+                    models.GroupRuleStatus,
+                    # Handled by TTL
+                    similarity.features,
+                ] + [b[0] for b in EXTRA_BULK_QUERY_DELETES]
+
+                configured = True
+            except BaseException as e:
+                print("oops", e)
+                sys.stdout.flush()
+                sys.stderr.flush()
+
+            print("worker configured")
+            sys.stdout.flush()
+            sys.stderr.flush()
 
         model, chunk = j
         model = import_string(model)
 
+        print ("starting deleting a thing", model, chunk)
+        sys.stdout.flush()
+        sys.stderr.flush()
         try:
             task = deletions.get(
                 model=model,
@@ -89,11 +123,17 @@ def multiprocess_worker(task_queue):
             )
 
             while True:
+                print ("waiting for chunk to delete")
+                sys.stdout.flush()
+                sys.stderr.flush()
                 if not task.chunk():
                     break
         except Exception as e:
             logger.exception(e)
         finally:
+            print ("task done")
+            sys.stdout.flush()
+            sys.stderr.flush()
             task_queue.task_done()
 
 
@@ -140,11 +180,12 @@ def cleanup(days, project, concurrency, silent, model, router, timed):
     from multiprocessing import Process, JoinableQueue as Queue
 
     pool = []
-    task_queue = Queue(1000)
+    task_queue = Queue(10)
     for _ in xrange(concurrency):
         p = Process(target=multiprocess_worker, args=(task_queue,))
         p.daemon = True
         p.start()
+        print ("started worker", p, p.is_alive())
         pool.append(p)
 
     from sentry.runner import configure
@@ -284,6 +325,11 @@ def cleanup(days, project, concurrency, silent, model, router, timed):
             )
 
             for chunk in q.iterator(chunk_size=100):
+                print ("adding chunk to task_queue", imp, len(chunk))
+                print([(p, p.is_alive(), p.exitcode, p.pid) for p in pool])
+                import sys
+                sys.stdout.flush()
+                sys.stderr.flush()
                 task_queue.put((imp, chunk))
 
             task_queue.join()

@@ -128,6 +128,8 @@ class BulkDeleteQuery(object):
         position = None
         cutoff = timezone.now() - timedelta(days=self.days)
 
+        print ("starting iterator_postgres")
+
         with dbc.get_new_connection(dbc.get_connection_params()) as conn:
             conn.autocommit = False
 
@@ -135,10 +137,12 @@ class BulkDeleteQuery(object):
 
             completed = False
             while not completed:
+                print ("starting loop")
                 # We explicitly use a named cursor here so that we can read a
                 # large quantity of rows from postgres incrementally, without
                 # having to pull all rows into memory at once.
                 with conn.cursor(uuid4().hex) as cursor:
+                    print ("new cursor")
                     where = [(u"{} < %s".format(quote_name(self.dtfield)), [cutoff])]
 
                     if self.project_id:
@@ -172,13 +176,17 @@ class BulkDeleteQuery(object):
                         batch_size=batch_size,
                     )
 
+                    print (query, parameters)
+
                     cursor.execute(query, parameters)
 
                     i = 0
                     for i, row in enumerate(cursor, 1):
                         key, position = row
+                        # print ("iterating cursor", i, key)
                         chunk.append(key)
                         if len(chunk) == chunk_size:
+                            #print ("yielding chunk", len(chunk))
                             yield tuple(chunk)
                             chunk = []
 
@@ -191,7 +199,10 @@ class BulkDeleteQuery(object):
                 conn.commit()
 
             if chunk:
+                #print ("yielding chunk at end", len(chunk))
                 yield tuple(chunk)
+
+        print ("finish iterator_postgres")
 
     def iterator_generic(self, chunk_size):
         from sentry.utils.query import RangeQuerySetWrapper
