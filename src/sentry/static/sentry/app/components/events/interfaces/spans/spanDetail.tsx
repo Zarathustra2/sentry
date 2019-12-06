@@ -34,7 +34,7 @@ type Props = {
 };
 
 type State = {
-  eventSlug?: string;
+  eventSlug?: string[];
 };
 
 class SpanDetail extends React.Component<Props, State> {
@@ -49,7 +49,7 @@ class SpanDetail extends React.Component<Props, State> {
       return;
     }
 
-    this.fetchSpan(span.span_id)
+    this.fetchSpanDescendents(span.span_id)
       .then(response => {
         if (
           !response.data ||
@@ -59,13 +59,15 @@ class SpanDetail extends React.Component<Props, State> {
           return;
         }
 
-        const result: TransactionResult = response.data[0];
-
-        this.setState({
-          eventSlug: generateEventSlug({
+        const eventSlugs = response.data.map((result: TransactionResult) => {
+          return generateEventSlug({
             id: result.id,
             'project.name': result['project.name'],
-          }),
+          });
+        });
+
+        this.setState({
+          eventSlug: eventSlugs,
         });
       })
       .catch(_error => {
@@ -73,7 +75,7 @@ class SpanDetail extends React.Component<Props, State> {
       });
   }
 
-  fetchSpan(spanID: string): Promise<any> {
+  fetchSpanDescendents(spanID: string): Promise<any> {
     const {api, orgId, span} = this.props;
 
     const url = `/organizations/${orgId}/eventsv2/`;
@@ -91,14 +93,14 @@ class SpanDetail extends React.Component<Props, State> {
   }
 
   renderTraversalButton(): React.ReactNode {
-    if (!this.state.eventSlug) {
+    if (!this.state.eventSlug || this.state.eventSlug.length <= 0) {
       return null;
     }
 
     const {eventView} = this.props;
 
     const parentTransactionLink = generateEventDetailsRoute({
-      eventSlug: this.state.eventSlug,
+      eventSlug: this.state.eventSlug[0],
       orgSlug: this.props.orgId,
     });
 
