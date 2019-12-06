@@ -3,6 +3,7 @@ import styled from 'react-emotion';
 import get from 'lodash/get';
 
 import {t} from 'app/locale';
+import EventView from 'app/views/eventsV2/eventView';
 
 import {SpanType, SpanChildrenLookupType, ParsedTraceType} from './types';
 import {
@@ -27,6 +28,7 @@ type RenderedSpanTree = {
 
 type PropType = {
   orgId: string;
+  eventView: EventView;
   trace: ParsedTraceType;
   dragProps: DragManagerChildrenProps;
   filterSpans: FilterSpans | undefined;
@@ -121,7 +123,7 @@ class SpanTree extends React.Component<PropType> {
     childSpans: Readonly<SpanChildrenLookupType>;
     generateBounds: (bounds: SpanBoundsType) => SpanGeneratedBoundsType;
   }): RenderedSpanTree => {
-    const {orgId} = this.props;
+    const {orgId, eventView} = this.props;
 
     const spanBarColour: string = pickSpanBarColour(span.op);
     const spanChildren: Array<SpanType> = get(childSpans, span.span_id, []);
@@ -197,6 +199,7 @@ class SpanTree extends React.Component<PropType> {
         <React.Fragment>
           {infoMessage}
           <SpanGroup
+            eventView={eventView}
             orgId={orgId}
             spanNumber={spanNumber}
             isLast={isLast}

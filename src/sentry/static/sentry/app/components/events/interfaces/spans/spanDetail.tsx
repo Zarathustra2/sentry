@@ -10,11 +10,12 @@ import Pill from 'app/components/pill';
 import space from 'app/styles/space';
 import withApi from 'app/utils/withApi';
 import {Client} from 'app/api';
+import Button from 'app/components/button';
 import {
   generateEventSlug,
   generateEventDetailsRoute,
 } from 'app/views/eventsV2/eventDetails/utils';
-import Button from 'app/components/button';
+import EventView from 'app/views/eventsV2/eventView';
 
 import {SpanType} from './types';
 
@@ -29,6 +30,7 @@ type Props = {
   orgId: string;
   span: Readonly<SpanType>;
   isRoot: boolean;
+  eventView: EventView;
 };
 
 type State = {
@@ -65,8 +67,6 @@ class SpanDetail extends React.Component<Props, State> {
             'project.name': result['project.name'],
           }),
         });
-
-        console.log('response', span.span_id, response);
       })
       .catch(_error => {
         // don't do anything
@@ -78,15 +78,10 @@ class SpanDetail extends React.Component<Props, State> {
 
     const url = `/organizations/${orgId}/eventsv2/`;
 
-    // TODO: ideally trace.parent_span_id
-    const parent_span_id_key = 'contexts.value';
-
     const query = {
       field: ['transaction', 'id'],
       sort: ['-id'],
-      query: `event.type:transaction trace:${
-        span.trace_id
-      } ${parent_span_id_key}:${spanID}`,
+      query: `event.type:transaction trace:${span.trace_id} trace.parent_span:${spanID}`,
     };
 
     return api.requestPromise(url, {
@@ -100,14 +95,21 @@ class SpanDetail extends React.Component<Props, State> {
       return null;
     }
 
-    const parentTransaction = generateEventDetailsRoute({
+    const {eventView} = this.props;
+
+    const parentTransactionLink = generateEventDetailsRoute({
       eventSlug: this.state.eventSlug,
       orgSlug: this.props.orgId,
     });
 
+    const to = {
+      pathname: parentTransactionLink,
+      query: eventView.generateQueryStringObject(),
+    };
+
     return (
       <div>
-        <Button size="xsmall" href={parentTransaction}>
+        <Button size="xsmall" to={to}>
           {t('Open span')}
         </Button>
       </div>
