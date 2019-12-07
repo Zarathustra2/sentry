@@ -191,7 +191,7 @@ class ___TraceNavigator extends React.Component<
           timestamp: event.endTimestamp, // this is essentially end_timestamp
           // same_process_as_parent?: boolean;
           op: rootSpanOpName,
-          // description?: string;
+          description: (event as any).title || undefined,
           data: {},
           // tags: (event as any).tags || undefined,
         };
