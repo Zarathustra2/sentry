@@ -279,6 +279,11 @@ class SpanTree extends React.Component<PropType> {
           <React.Fragment key={key}>{renderedOrphan.spanTree}</React.Fragment>
         );
 
+        acc.numOfSpansOutOfViewAbove = renderedOrphan.numOfSpansOutOfViewAbove;
+        acc.numOfFilteredSpansAbove = renderedOrphan.numOfFilteredSpansAbove;
+
+        acc.nextSpanNumber = renderedOrphan.nextSpanNumber;
+
         return acc;
       },
       initial
