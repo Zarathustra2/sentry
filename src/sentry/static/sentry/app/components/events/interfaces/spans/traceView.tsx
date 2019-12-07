@@ -69,8 +69,8 @@ class TraceView extends React.PureComponent<Props, State> {
 
   static getDerivedStateFromProps(props: Props, state: State): State {
     return {
-      parsedTrace: parseTrace(props.event),
       ...state,
+      parsedTrace: parseTrace(props.event),
     };
   }
 
@@ -264,12 +264,38 @@ function parseTrace(event: Readonly<SentryTransactionEvent>): ParsedTraceType {
       parentSpanID,
       numOfSpans: 0,
       spans: [],
+      orphanSpans: [],
     };
   }
 
-  // we reduce spans to become an object mapping span ids to their children
+  // a span A is an orphan if there are no other spans that is a parent of it
+  const potentialParents = new Set(
+    spans.map(span => {
+      return span.span_id;
+    })
+  );
 
-  console.log('spans.length', spans.length);
+  potentialParents.add(rootSpanID);
+
+  const orphanSpans = spans.filter(span => {
+    if (span.parent_span_id) {
+      const hasParent = potentialParents.has(span.parent_span_id);
+      return !hasParent;
+    }
+
+    return true;
+  });
+
+  orphanSpans.sort(sortSpansAscending);
+
+  orphanSpans.sort((firstSpan: SpanType, _secondSpan: SpanType) => {
+    if (firstSpan.parent_span_id === undefined) {
+      return -1;
+    }
+    return 0;
+  });
+
+  // we reduce spans to become an object mapping span ids to their children
 
   const init: ParsedTraceType = {
     op: rootSpanOpName,
@@ -281,6 +307,7 @@ function parseTrace(event: Readonly<SentryTransactionEvent>): ParsedTraceType {
     parentSpanID,
     numOfSpans: spans.length,
     spans,
+    orphanSpans,
   };
 
   const reduced: ParsedTraceType = spans.reduce((acc, span) => {
@@ -327,20 +354,22 @@ function parseTrace(event: Readonly<SentryTransactionEvent>): ParsedTraceType {
   // sort span children by their start timestamps in ascending order
 
   Object.values(reduced.childSpans).forEach(spanChildren => {
-    spanChildren.sort((firstSpan, secondSpan) => {
-      if (firstSpan.start_timestamp < secondSpan.start_timestamp) {
-        return -1;
-      }
-
-      if (firstSpan.start_timestamp === secondSpan.start_timestamp) {
-        return 0;
-      }
-
-      return 1;
-    });
+    spanChildren.sort(sortSpansAscending);
   });
 
   return reduced;
+}
+
+function sortSpansAscending(firstSpan: SpanType, secondSpan: SpanType) {
+  if (firstSpan.start_timestamp < secondSpan.start_timestamp) {
+    return -1;
+  }
+
+  if (firstSpan.start_timestamp === secondSpan.start_timestamp) {
+    return 0;
+  }
+
+  return 1;
 }
 
 export default TraceView;

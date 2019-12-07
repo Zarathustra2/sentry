@@ -238,8 +238,6 @@ class ___TraceNavigator extends React.Component<
     const {organization, eventView} = this.props;
     const event = this.generateGlobalTransactionEvent();
 
-    console.log('event', event);
-
     return (
       <Section>
         <TraceView
