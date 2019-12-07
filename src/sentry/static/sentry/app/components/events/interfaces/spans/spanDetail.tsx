@@ -4,6 +4,7 @@ import get from 'lodash/get';
 import map from 'lodash/map';
 
 import {t} from 'app/locale';
+import Link from 'app/components/links/link';
 import DateTime from 'app/components/dateTime';
 import Pills from 'app/components/pills';
 import Pill from 'app/components/pill';
@@ -34,20 +35,16 @@ type Props = {
 };
 
 type State = {
-  eventSlug?: string[];
+  transactionResults?: TransactionResult[];
 };
 
 class SpanDetail extends React.Component<Props, State> {
   state: State = {
-    eventSlug: undefined,
+    transactionResults: undefined,
   };
 
   componentDidMount() {
-    const {span, isRoot} = this.props;
-
-    if (isRoot) {
-      return;
-    }
+    const {span} = this.props;
 
     this.fetchSpanDescendents(span.span_id)
       .then(response => {
@@ -59,15 +56,8 @@ class SpanDetail extends React.Component<Props, State> {
           return;
         }
 
-        const eventSlugs = response.data.map((result: TransactionResult) => {
-          return generateEventSlug({
-            id: result.id,
-            'project.name': result['project.name'],
-          });
-        });
-
         this.setState({
-          eventSlug: eventSlugs,
+          transactionResults: response.data,
         });
       })
       .catch(_error => {
@@ -81,7 +71,7 @@ class SpanDetail extends React.Component<Props, State> {
     const url = `/organizations/${orgId}/eventsv2/`;
 
     const query = {
-      field: ['transaction', 'id'],
+      field: ['transaction', 'id', 'trace.span'],
       sort: ['-id'],
       query: `event.type:transaction trace:${span.trace_id} trace.parent_span:${spanID}`,
     };
@@ -93,14 +83,14 @@ class SpanDetail extends React.Component<Props, State> {
   }
 
   renderTraversalButton(): React.ReactNode {
-    if (!this.state.eventSlug || this.state.eventSlug.length <= 0) {
+    if (!this.state.transactionResults || this.state.transactionResults.length <= 0) {
       return null;
     }
 
     const {eventView} = this.props;
 
     const parentTransactionLink = generateEventDetailsRoute({
-      eventSlug: this.state.eventSlug[0],
+      eventSlug: generateSlug(this.state.transactionResults[0]),
       orgSlug: this.props.orgId,
     });
 
@@ -119,7 +109,7 @@ class SpanDetail extends React.Component<Props, State> {
   }
 
   render() {
-    const {span} = this.props;
+    const {span, orgId, eventView} = this.props;
 
     const startTimestamp: number = span.start_timestamp;
     const endTimestamp: number = span.timestamp;
@@ -140,6 +130,11 @@ class SpanDetail extends React.Component<Props, State> {
             <Row title="Span ID" extra={this.renderTraversalButton()}>
               {span.span_id}
             </Row>
+            <LinkedTransactionsList
+              results={this.state.transactionResults}
+              orgId={orgId}
+              eventView={eventView}
+            />
             <Row title="Trace ID">{span.trace_id}</Row>
             <Row title="Parent Span ID">{span.parent_span_id || ''}</Row>
             <Row title="Description">{get(span, 'description', '')}</Row>
@@ -220,6 +215,49 @@ const Row = ({
   );
 };
 
+const LinkedTransactionsList = (props: {
+  results?: TransactionResult[];
+  orgId: string;
+  eventView: EventView;
+}) => {
+  const {results, orgId, eventView} = props;
+
+  if (!results || !Array.isArray(results) || results.length <= 0) {
+    return null;
+  }
+
+  const list = results.map(result => {
+    const parentTransactionLink = generateEventDetailsRoute({
+      eventSlug: generateSlug(result),
+      orgSlug: orgId,
+    });
+
+    const to = {
+      pathname: parentTransactionLink,
+      query: eventView.generateQueryStringObject(),
+    };
+
+    console.log('result', result);
+
+    return (
+      <div>
+        <PreValue className="val">
+          <Link key={result.id} to={to}>
+            {`${result['trace.span']} - ${result.transaction}`}
+          </Link>
+        </PreValue>
+      </div>
+    );
+  });
+
+  return (
+    <tr>
+      <td className="key">Linked transactions</td>
+      <td className="value">{list}</td>
+    </tr>
+  );
+};
+
 const Tags = ({span}: {span: SpanType}) => {
   const tags: {[tag_name: string]: string} | undefined = get(span, 'tags');
 
@@ -246,5 +284,12 @@ const Tags = ({span}: {span: SpanType}) => {
     </tr>
   );
 };
+
+function generateSlug(result: TransactionResult): string {
+  return generateEventSlug({
+    id: result.id,
+    'project.name': result['project.name'],
+  });
+}
 
 export default withApi(SpanDetail);
