@@ -13,6 +13,7 @@ import theme from 'app/utils/theme';
 import withProjects from 'app/utils/withProjects';
 import withApi from 'app/utils/withApi';
 import {Client} from 'app/api';
+import {Panel} from 'app/components/panels';
 import {
   SentryTransactionEvent,
   SpanType,
@@ -225,7 +226,9 @@ class ___TraceNavigator extends React.Component<
       startTimestamp,
       endTimestamp,
       contexts: {
-        trace: {},
+        trace: {
+          op: 'trace';
+        },
       },
     };
   }
@@ -240,12 +243,14 @@ class ___TraceNavigator extends React.Component<
 
     return (
       <Section>
+        <Panel>
         <TraceView
           event={event}
           searchQuery={undefined}
           orgId={organization.slug}
           eventView={eventView}
         />
+        </Panel>
       </Section>
     );
   }
