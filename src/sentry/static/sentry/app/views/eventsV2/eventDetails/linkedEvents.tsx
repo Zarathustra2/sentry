@@ -192,7 +192,7 @@ class ___TraceNavigator extends React.Component<
           op: rootSpanOpName,
           // description?: string;
           data: {},
-          tags: (event as any).tags || undefined,
+          // tags: (event as any).tags || undefined,
         };
       }
     );
