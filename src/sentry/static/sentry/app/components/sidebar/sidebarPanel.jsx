@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'react-emotion';
-import {css} from 'react-emotion';
+import {css} from styled from 'react-emotion';
+
 
 class SidebarPanel extends React.Component {
   static propTypes = {

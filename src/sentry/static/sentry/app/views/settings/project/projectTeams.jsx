@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'react-emotion';
-import {css} from 'react-emotion';
+import {css} from styled from 'react-emotion';
+
 
 import {addErrorMessage} from 'app/actionCreators/indicator';
 import {addTeamToProject, removeTeamFromProject} from 'app/actionCreators/projects';

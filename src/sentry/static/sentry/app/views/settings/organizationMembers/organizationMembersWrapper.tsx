@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 import {openInviteMembersModal} from 'app/actionCreators/modal';
 import {OrganizationDetailed, Member} from 'app/types';

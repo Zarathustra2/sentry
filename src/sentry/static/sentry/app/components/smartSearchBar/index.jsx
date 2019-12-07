@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core';
 import {ClassNames, css} from '@emotion/core';
 import {browserHistory} from 'react-router';
 import PropTypes from 'prop-types';
@@ -6,7 +8,7 @@ import Reflux from 'reflux';
 import * as Sentry from '@sentry/browser';
 import debounce from 'lodash/debounce';
 import createReactClass from 'create-react-class';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 import {
   DEFAULT_DEBOUNCE_DURATION,

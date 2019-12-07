@@ -2,7 +2,7 @@ import {Params} from 'react-router/lib/Router';
 import {Link} from 'react-router';
 import React from 'react';
 import moment from 'moment';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 import {PageHeader} from 'app/styles/organization';
 import {t} from 'app/locale';

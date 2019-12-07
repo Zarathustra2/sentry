@@ -1,10 +1,12 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core';
 import isEqual from 'lodash/isEqual';
 import {withRouter, browserHistory} from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Reflux from 'reflux';
 import createReactClass from 'create-react-class';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import {css} from '@emotion/core';
 import queryString from 'query-string';
 

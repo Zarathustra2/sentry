@@ -1,6 +1,6 @@
 import {Params} from 'react-router/lib/Router';
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 import {PageContent} from 'app/styles/organization';
 import {t} from 'app/locale';

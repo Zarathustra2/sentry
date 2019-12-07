@@ -1,7 +1,7 @@
 import {browserHistory} from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {css} from 'react-emotion';
+import {css} from 'emotion';
 
 import {t} from 'app/locale';
 import parseLinkHeader from 'app/utils/parseLinkHeader';

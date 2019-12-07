@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'react-emotion';
-import {css} from 'react-emotion';
+import {css} from styled from 'react-emotion';
+
 import {Value} from 'react-select';
 
 import InlineSvg from 'app/components/inlineSvg';

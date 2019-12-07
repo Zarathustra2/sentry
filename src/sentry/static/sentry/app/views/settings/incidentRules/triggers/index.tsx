@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 import {Trigger} from 'app/views/settings/incidentRules/types';
 import {Organization, Project} from 'app/types';

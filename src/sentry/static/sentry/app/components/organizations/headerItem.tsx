@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import {Link} from 'react-router';
 
 import InlineSvg from 'app/components/inlineSvg';

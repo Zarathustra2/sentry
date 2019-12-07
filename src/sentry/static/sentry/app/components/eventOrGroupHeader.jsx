@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {withRouter} from 'react-router';
-import styled from 'react-emotion';
-import {css} from 'react-emotion';
+import {css} from styled from 'react-emotion';
+
 import classNames from 'classnames';
 import capitalize from 'lodash/capitalize';
 

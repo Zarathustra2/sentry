@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import {Manager, Reference, Popper} from 'react-popper';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import {keyframes} from 'emotion';
 
 import {fadeIn} from 'app/styles/animations';

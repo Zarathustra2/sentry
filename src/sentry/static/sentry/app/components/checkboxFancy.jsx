@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'react-emotion';
-import {css} from 'react-emotion';
+import {css} from styled from 'react-emotion';
+
 import PropTypes from 'prop-types';
 import InlineSvg from 'app/components/inlineSvg';
 
