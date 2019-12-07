@@ -16,10 +16,21 @@ export type SpanEntry = {
   data: Array<SpanType>;
 };
 
+export type TraceContextType = {
+  op?: string;
+  type?: 'trace';
+  span_id?: string;
+  trace_id?: string;
+  parent_span_id?: string;
+};
+
 export type SentryTransactionEvent = {
   entries: Array<SpanEntry>;
   startTimestamp: number;
   endTimestamp: number;
+  contexts: {
+    trace?: TraceContextType;
+  };
 };
 
 export type SpanChildrenLookupType = {[span_id: string]: Array<SpanType>};

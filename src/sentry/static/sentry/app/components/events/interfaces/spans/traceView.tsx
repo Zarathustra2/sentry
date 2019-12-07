@@ -11,18 +11,16 @@ import EventView from 'app/views/eventsV2/eventView';
 
 import DragManager, {DragManagerChildrenProps} from './dragManager';
 import SpanTree from './spanTree';
-import {SpanType, SpanEntry, SentryTransactionEvent, ParsedTraceType} from './types';
+import {
+  SpanType,
+  SpanEntry,
+  SentryTransactionEvent,
+  ParsedTraceType,
+  TraceContextType,
+} from './types';
 import {isValidSpanID, generateRootSpan} from './utils';
 import TraceViewHeader from './header';
 import * as CursorGuideHandler from './cursorGuideHandler';
-
-type TraceContextType = {
-  op?: string;
-  type?: 'trace';
-  span_id?: string;
-  trace_id?: string;
-  parent_span_id?: string;
-};
 
 type IndexedFusedSpan = {
   span: SpanType;
@@ -270,6 +268,8 @@ function parseTrace(event: Readonly<SentryTransactionEvent>): ParsedTraceType {
   }
 
   // we reduce spans to become an object mapping span ids to their children
+
+  console.log('spans.length', spans.length);
 
   const init: ParsedTraceType = {
     op: rootSpanOpName,

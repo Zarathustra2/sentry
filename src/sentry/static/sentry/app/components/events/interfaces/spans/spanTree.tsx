@@ -224,6 +224,8 @@ class SpanTree extends React.Component<PropType> {
 
     const rootSpan: SpanType = generateRootSpan(trace);
 
+    console.log('rootSpan', rootSpan);
+
     const generateBounds = boundsGenerator({
       traceStartTimestamp: trace.traceStartTimestamp,
       traceEndTimestamp: trace.traceEndTimestamp,
