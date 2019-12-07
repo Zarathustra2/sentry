@@ -244,6 +244,8 @@ class SpanTree extends React.Component<PropType> {
       generateBounds,
     });
 
+    // render orphan spans
+
     type AccType = {
       renderedSpanChildren: Array<JSX.Element>;
       nextSpanNumber: number;

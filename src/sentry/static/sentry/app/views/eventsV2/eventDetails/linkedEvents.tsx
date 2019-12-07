@@ -78,6 +78,7 @@ class LinkedEvents extends AsyncComponent<Props, State> {
   renderBody() {
     const {event, organization, projects, eventView, location} = this.props;
     const {linkedEvents} = this.state;
+    const trace = event.tags.find(tag => tag.key === 'trace');
 
     const hasLinkedEvents =
       linkedEvents && linkedEvents.data && linkedEvents.data.length >= 1;
@@ -119,6 +120,7 @@ class LinkedEvents extends AsyncComponent<Props, State> {
           eventView={eventView}
           linkedEvents={linkedEvents}
           location={location}
+          trace={(trace && trace.value) || undefined}
         />
       </React.Fragment>
     );
@@ -131,6 +133,7 @@ type TraceNavigatorProps = {
   api: Client;
   eventView: EventView;
   location: Location;
+  trace?: string;
 };
 
 type TraceNavigatorState = {
@@ -227,7 +230,8 @@ class ___TraceNavigator extends React.Component<
       endTimestamp,
       contexts: {
         trace: {
-          op: 'trace';
+          op: 'trace',
+          trace_id: this.props.trace,
         },
       },
     };
@@ -244,12 +248,12 @@ class ___TraceNavigator extends React.Component<
     return (
       <Section>
         <Panel>
-        <TraceView
-          event={event}
-          searchQuery={undefined}
-          orgId={organization.slug}
-          eventView={eventView}
-        />
+          <TraceView
+            event={event}
+            searchQuery={undefined}
+            orgId={organization.slug}
+            eventView={eventView}
+          />
         </Panel>
       </Section>
     );
