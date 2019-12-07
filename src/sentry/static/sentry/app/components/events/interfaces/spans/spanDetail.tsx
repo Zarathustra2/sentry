@@ -21,9 +21,9 @@ import EventView from 'app/views/eventsV2/eventView';
 import {SpanType} from './types';
 
 type TransactionResult = {
-  'project.name': String;
-  transaction: String;
-  id: String;
+  'project.name': string;
+  transaction: string;
+  id: string;
 };
 
 type Props = {
@@ -237,10 +237,8 @@ const LinkedTransactionsList = (props: {
       query: eventView.generateQueryStringObject(),
     };
 
-    console.log('result', result);
-
     return (
-      <div>
+      <div key={result.id}>
         <PreValue className="val">
           <Link key={result.id} to={to}>
             {`${result['trace.span']} - ${result.transaction}`}
